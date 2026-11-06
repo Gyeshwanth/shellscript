@@ -15,40 +15,44 @@ Instance_id=$(aws ec2 run-instances \
     --image-id $AMI_ID \
     --instance-type t3.micro \
     --security-group-ids $SG_ID \
-     --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=$instance}]" \
-     --query 'Instances[0].InstanceId' \
-     -output text)
+    --tag-specifications "ResourceType=instance,Tags=[{Key=Name, Value=$instance}]" \
+    --query 'Instances[0].InstanceId' \
+    -output text)
 
 
 if [ $instance == "frontend" ]
 then
-ID=$(aws ec2 describe-instances \
+IP=$(aws ec2 describe-instances \
     --instance-ids $Instance_id \
     --query 'Reservations[0].Instances[0].PrivateIpAddress' \
     --output text)
     RECORD_NAME=$DOMAIN_NAME
 
 else
-ID=$(aws ec2 describe-instances \
+IP=$(aws ec2 describe-instances \
     --instance-ids $Instance_id \
     --query 'Reservations[0].Instances[0].PublicIpAddress' \
     --output text)
 RECORD_NAME=$instance.DOMAIN_NAME
 fi
 
-aws route53 change-resource-record-sets \
+echo "$instance IP address: $IP"
+
+    aws route53 change-resource-record-sets \
     --hosted-zone-id $ZONE_ID \
-    --change-batch '{
-      "Changes": [{
-        "Action": "UPSERT",
-        "ResourceRecordSet": {
-          "Name": "'$RECORD_NAME'",
-          "Type": "A",
-          "TTL": 300,
-          "ResourceRecords": [
-            {"Value": "'$ID'"}
-          ]
+    --change-batch '
+    {
+        "Comment": "Creating or Updating a record set for cognito endpoint"
+        ,"Changes": [{
+        "Action"              : "UPSERT"
+        ,"ResourceRecordSet"  : {
+            "Name"              : "'$RECORD_NAME'"
+            ,"Type"             : "A"
+            ,"TTL"              : 1
+            ,"ResourceRecords"  : [{
+                "Value"         : "'$IP'"
+            }]
         }
-      }]
+        }]
     }'
 done
