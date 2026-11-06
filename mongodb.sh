@@ -13,3 +13,14 @@ mkdir -p $LOGS_FOLDER
 echo "Script started executing at:" $(date) | tee -a $LOG_FILE
 
 
+if [ $? ne 0 ]
+then
+  echo -e "$R ERROR:: Please run this script as root user $N" | tee -a $LOG_FILE
+  exit 1
+else
+  echo "your running as root user" | tee -a $LOG_FILE
+fi
+
+
+
+
