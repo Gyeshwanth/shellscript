@@ -5,7 +5,7 @@ USER_ID=$(id -u)
 R="\e[31m"
 G="\e[32m"
 N="\e[0m"
-
+SCRIPT_DIR=$PWD
 LOG_FOLDER="/var/log/robotshop"
 SCRIPT_NAME=$(echo $0 |awk -F "." {'print $1'})
 LOG_FILE="$LOG_FOLDER/$SCRIPT_NAME.log"
@@ -75,7 +75,7 @@ systemctl enable catalogue &>>$LOG_FILE
 systemctl start catalogue &>>$LOG_FILE
 VALIDATE $? "enable and starting catalogue service"
 
-cp mongo.repo /etc/yum.repos.d/mongo.repo
+cp $SCRIPT_DIR/mongo.repo /etc/yum.repos.d/mongo.repo
 validate $? "copying mongo repo"
 
 dnf install mongodb-mongosh -y &>>$LOG_FILE

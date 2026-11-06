@@ -4,7 +4,7 @@ USER_ID=$(id -u)
 R="\e[31m"
 G="\e[32m"
 N="\e[0m"
-
+SCRIPT_DIR=$PWD
 
 LOG_FOLDER="/var/log/robotshop"
 SCRIPT_NAME=$(echo $0 |awk -F "." {'print $1'})
@@ -62,7 +62,7 @@ VALIDATE $? "unzipping frontend"
 rm -rf /etc/nginx/nginx.conf &>>$LOG_FILE
 VALIDATE $? "Remove default nginx conf"
 
-cp nginx.conf /etc/nginx/nginx.conf
+cp $SCRIPT_DIR/nginx.conf /etc/nginx/nginx.conf
 VALIDATE $? "Copying nginx.conf"
 
 
