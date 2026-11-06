@@ -5,8 +5,8 @@ R="\e[31m"
 G="\e[32m"
 N="\e[0m"
 
-LOGS_FOLDER="/var/logs/robotshop-logs"
-SCRIPT_NAME=$(echo $0 | awk -F "." {'print $f1'})
+LOGS_FOLDER="/var/log/robotshop-logs"
+SCRIPT_NAME=$(echo $0 | awk -F "." {'print $1'})
 LOG_FILE="$LOGS_FOLDER/$SCRIPT_NAME.log"
 
 mkdir -p $LOGS_FOLDER
