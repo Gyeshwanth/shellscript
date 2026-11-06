@@ -13,12 +13,13 @@ mkdir -p $LOGS_FOLDER
 echo "Script started executing at:" $(date) | tee -a $LOG_FILE
 
 
-if [ $USER_ID -ne 0 ]
+if [ $USER_ID -eq 0 ]
 then
-  echo -e "$R ERROR:: Please run this script as root user $N" | tee -a $LOG_FILE
-  exit 1
+   echo "your running as root user" | tee -a $LOG_FILE
+
 else
-  echo "your running as root user" | tee -a $LOG_FILE
+   echo -e "$R ERROR:: Please run this script as root user $N" | tee -a $LOG_FILE
+   exit 1
 fi
 
 validate(){
@@ -27,6 +28,7 @@ then
   echo -e "$2 is $G success $N" | tee -a LOGS_FILE
 else
   echo -e "$ is $R failed $N" | tee -a LOGS_FILE
+fi
 }
 
 cp mongo.repo /etc/yum.repos.d/mongo.repo
