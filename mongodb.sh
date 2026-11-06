@@ -21,6 +21,15 @@ else
   echo "your running as root user" | tee -a $LOG_FILE
 fi
 
+validate(){
+if [ $1 -eq 0 ]
+then
+  echo -e "$2 is $G success $N" | tee -a LOGS_FILE
+else
+  echo -e "$ is $R failed $N" | tee -a LOGS_FILE
+}
 
+cp mongo.repo /etc/yum.repos.d/mongo.repo
+validate $? "copying mongo repo"
 
 
