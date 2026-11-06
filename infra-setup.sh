@@ -26,14 +26,14 @@ IP=$(aws ec2 describe-instances \
     --instance-ids $Instance_id \
     --query 'Reservations[0].Instances[0].PrivateIpAddress' \
     --output text)
-    RECORD_NAME=$DOMAIN_NAME
+    RECORD_NAME="$DOMAIN_NAME"
 
 else
 IP=$(aws ec2 describe-instances \
     --instance-ids $Instance_id \
     --query 'Reservations[0].Instances[0].PublicIpAddress' \
     --output text)
-RECORD_NAME=$instance.DOMAIN_NAME
+RECORD_NAME="$instance.DOMAIN_NAME"
 fi
 
 echo "$instance IP address: $IP"
