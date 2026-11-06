@@ -25,13 +25,26 @@ fi
 validate(){
 if [ $1 -eq 0 ]
 then
-  echo -e "$2 is $G success $N" | tee -a LOGS_FILE
+  echo -e "$2 is.. $G success $N" | tee -a LOG_FILE
 else
-  echo -e "$ is $R failed $N" | tee -a LOGS_FILE
+  echo -e "$2 is.. $R failed $N" | tee -a LOG_FILE
 fi
 }
 
 cp mongo.repo /etc/yum.repos.d/mongo.repo
 validate $? "copying mongo repo"
 
+dnf install mongodb-org -y &>>LOGS_FILE
+validate $? "installing mongodb"
+
+systemctl enable mongod &>>LOG_FILE
+validate $? "enabling mongodb"
+systemctl start mongod &>>LOG_FILE
+validate $? "starting mongodb"
+
+sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mongod.conf
+validate $? "Update listen address"
+
+systemctl restart mongod
+validate $? "restarting mongodb"
 
