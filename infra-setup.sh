@@ -7,9 +7,9 @@ INSTANCES=("mongodb" "mysql" "redis" "rabbitmq" "catalogue" "user" "cart" "shipp
 ZONE_ID="Z09395493F0EO6UGSZYVB"
 
 
-$(aws ec2 run-instances \
+aws ec2 run-instances \
     --image-id $AMI_ID \
     --instance-type t3.micro \
     --security-group-ids $SG_ID \
     --count 1 \
-    --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=MyFirstEC2}]')
+    --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=MyFirstEC2}]'
