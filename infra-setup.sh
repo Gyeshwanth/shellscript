@@ -15,30 +15,32 @@ Instance_id=$(aws ec2 run-instances \
     --image-id $AMI_ID \
     --instance-type t3.micro \
     --security-group-ids $SG_ID \
-    --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=$instance}]')
+    --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=$instance}]'\
+    --output text)
 
-if [ instance == frontend]
+if [ $instance == frontend]
 then
 ID=$(aws ec2 describe-instances \
     --instance-ids $Instance_id \
     --query 'Reservations[0].Instances[0].PrivateIpAddress' \
     --output text)
+    RECORD_NAME=$DOMAIN_NAME
 
 else
 ID=$(aws ec2 describe-instances \
     --instance-ids $Instance_id \
     --query 'Reservations[0].Instances[0].PublicIpAddress' \
     --output text)
-
+RECORD_NAME=$instance.DOMAIN_NAME
 fi
 
 aws route53 change-resource-record-sets \
-    --hosted-zone-id ZONE_ID \
+    --hosted-zone-id $ZONE_ID \
     --change-batch '{
       "Changes": [{
         "Action": "UPSERT",
         "ResourceRecordSet": {
-          "Name": "'$DOMAIN_NAME'",
+          "Name": "'$RECORD_NAME'",
           "Type": "A",
           "TTL": 300,
           "ResourceRecords": [
@@ -47,5 +49,4 @@ aws route53 change-resource-record-sets \
         }
       }]
     }'
-
 done
