@@ -57,7 +57,7 @@ mkdir -p /app
 VALIDATE $? "Creating app directory"
 
 
-curl -L -o /tmp/user.zip https://roboshop-artifacts.s3.amazonaws.com/cart-v3.zip  &>>$LOG_FILE
+curl -L -o /tmp/cart.zip https://roboshop-artifacts.s3.amazonaws.com/cart-v3.zip  &>>$LOG_FILE
 VALIDATE $? "Downloading cart"
 
 rm -rf /app/*
