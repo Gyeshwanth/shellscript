@@ -1,5 +1,6 @@
 #!/bin/bash
 
+START_TIME=$(date +%s)
 
 USER_ID=$(id -u)
 R="\e[31m"
@@ -50,3 +51,8 @@ validate $? "enabling and started mysql server"
 
 mysql_secure_installation --set-root-pass $MYSQL_ROOT_PASSWORD
 validate $? "set user pwd  mysql server"
+
+END_TIME=$(date +%s)
+TOTAL_TIME=$(( $END_TIME - $START_TIME ))
+
+echo -e "Script exection completed successfully, $Y time taken: $TOTAL_TIME seconds $N" | tee -a $LOG_FILE
