@@ -14,9 +14,7 @@ mkdir -p $LOGS_FOLDER
 
 echo "Script started executing at " $(date) | tee -a $LOG_FILE
 
-echo ":who is running :$USER_ID" | tee -a $LOG_FILE
-
-if [ USER_ID -eq 0 ]
+if [ $USER_ID -eq 0 ]
 then
 echo -e "$G you running this script as root user" | tee -a $LOG_FILE
 else
