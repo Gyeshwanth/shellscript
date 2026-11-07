@@ -24,14 +24,13 @@ if [ $instance == "frontend" ]
 then
 IP=$(aws ec2 describe-instances \
     --instance-ids $Instance_id \
-    --query 'Reservations[0].Instances[0].PrivateIpAddress' \
+    --query 'Reservations[0].Instances[0].PublicIpAddress' \
     --output text)
     RECORD_NAME="$DOMAIN_NAME"
-
 else
 IP=$(aws ec2 describe-instances \
     --instance-ids $Instance_id \
-    --query 'Reservations[0].Instances[0].PublicIpAddress' \
+    --query 'Reservations[0].Instances[0].PrivateIpAddress' \
     --output text)
 RECORD_NAME="$instance.$DOMAIN_NAME"
 fi
